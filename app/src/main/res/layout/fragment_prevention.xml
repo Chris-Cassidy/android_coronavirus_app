@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="How to prevent"
+            android:textSize="30dp"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_marginBottom="10dp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/prevention"
+            android:layout_marginBottom="10dp"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#A9A9A9"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/content_prevention_header"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="20dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/content_prevention"
+            android:textColor="#000"
+            android:paddingLeft="40dp"
+            android:paddingRight="20dp"/>
+
+    </LinearLayout>
+
+</ScrollView>
