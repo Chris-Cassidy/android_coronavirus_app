@@ -21,17 +21,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mycoronavirusapp.R;
+import com.example.mycoronavirusapp.ui.countries.CountriesFragment;
+import com.example.mycoronavirusapp.ui.countries.Country;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class HomeFragment extends Fragment {
 
-    private TextView tvConfirmed, tvRecovered, tvDeaths, tvLastUpdate;
+    private TextView tvConfirmed, tvRecovered, tvDeaths, tvLastUpdate, tvIdCases, tvIdTodayCases, tvIdDeaths, tvIdTodayDeaths, tvIdActive, tvIdCritical, tvIdRecovered;
     private ProgressBar progressBar;
+
+    private static final String TAG = HomeFragment.class.getSimpleName();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,8 +48,16 @@ public class HomeFragment extends Fragment {
         tvDeaths = root.findViewById(R.id.total_deaths);
         tvLastUpdate = root.findViewById(R.id.last_update);
         progressBar = root.findViewById(R.id.home_progress);
+        tvIdCases = root.findViewById(R.id.id_cases);
+        tvIdTodayCases = root.findViewById(R.id.id_today_cases);
+        tvIdDeaths = root.findViewById(R.id.id_deaths);
+        tvIdTodayDeaths = root.findViewById(R.id.id_today_deaths);
+        tvIdActive = root.findViewById(R.id.id_active);
+        tvIdCritical = root.findViewById(R.id.id_critical);
+        tvIdRecovered = root.findViewById(R.id.id_recovered);
 
         getData();
+        getCountries();
 
         return root;
     }
@@ -86,5 +100,49 @@ public class HomeFragment extends Fragment {
         });
 
         queue.add(stringRequest);
+    }
+
+    private void getCountries() {
+        String url = "https://corona.lmao.ninja/v2/countries";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressBar.setVisibility(View.GONE);
+
+                if (response != null) {
+                    Log.e(TAG, "onResponse: " + response);
+
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            JSONObject data = jsonArray.getJSONObject(i);
+                            if(data.getString("country").equals("Indonesia")) {
+                                tvIdCases.setText(data.getString("cases"));
+                                tvIdTodayCases.setText(data.getString("todayCases"));
+                                tvIdDeaths.setText(data.getString("deaths"));
+                                tvIdTodayDeaths.setText(data.getString("todayDeaths"));
+                                tvIdActive.setText(data.getString("active"));
+                                tvIdCritical.setText(data.getString("critical"));
+                                tvIdRecovered.setText(data.getString("recovered"));
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+                Log.e(TAG, "onResponse: " + error);
+            }
+        });
+
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 }
